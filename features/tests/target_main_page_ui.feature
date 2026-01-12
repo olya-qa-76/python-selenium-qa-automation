@@ -1,0 +1,6 @@
+Feature: Tests for Target main page UI
+
+  Scenario: User can see top header links
+    Given Open Target main page
+    Then Verify 6 header links are shown
+    # used a parameterized value (6), which is excellent for reusability.
