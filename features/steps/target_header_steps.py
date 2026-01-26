@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
 
@@ -12,22 +13,32 @@ HEADER_LINKS = (By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader/'
 
 @when('Click on Cart icon')
 def click_cart(context):
-    context.driver.find_element(*CART_ICON).click()
+    context.driver.wait.until(
+        EC.element_to_be_clickable(CART_ICON),
+        message='Cart icon is not clickable.'
+    ).click()
 
 
 @when('Search for {product}')  # In the behave BDD framework,
 # step_parameters allow you to pass dynamic values from your feature files
 # to your Python step definitions, making steps reusable and readable
 def search_product(context, product):  # Make sure you put the 'step_parameter' after 'context' in the function: (context, step_parameter)
-    context.driver.find_element(*SEARCH_FIELD).send_keys(product)
-    context.driver.find_element(*SEARCH_ICON).click()
-    sleep(15)  # wait for 15 seconds for 'Ad' banner to disappear
+    context.driver.wait.until(
+        EC.element_to_be_clickable(SEARCH_FIELD),
+        message='Search Field is not located.'
+    ).send_keys(product)
+    context.driver.wait.until(
+        EC.element_to_be_clickable(SEARCH_ICON)
+        ,message='Search icon is not clickable.'
+    ).click()
 
 
 @then('Verify {expected_links} header links are shown')  # {expected_links} captures the number from the feature file.
                                                          # Behave passes it as a string by default.
 def verify_header_links(context, expected_links):
     expected_amount = int(expected_links)  # Converts the string "6" → integer 6.
-    links = context.driver.find_elements(*HEADER_LINKS)  # find_elements returns a list, will never throw ExceptionError incase the locator fails find the element (empty list if nothing found).
-                                                         # Safe for count-based assertions.
+    links = context.driver.wait.until(
+        EC.visibility_of_all_elements_located(HEADER_LINKS),
+        message='Header links are not visible.'
+    )
     assert len(links) == expected_amount, f'Expected {expected_amount} header links, but got {len(links)}'  # compare actual vs expected count.

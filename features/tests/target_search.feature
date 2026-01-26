@@ -44,3 +44,8 @@ NB. Scenario outlines are mostly used in registration input data tests (valid/in
 #    |username  |password        |error_message                 |
 #    |non_exist |password122     |this account not found        |
 #    |user123   |incorrect_pass  |this password is not correct  |
+
+  Scenario: User can search for a product on Target
+    Given Open Target main page
+    When Search for tea
+    Then Verify that every product on Target search results page has a title and image

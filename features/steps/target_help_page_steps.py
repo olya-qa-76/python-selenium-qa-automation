@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
 
@@ -21,44 +22,71 @@ def open_target_help_page(context):
 
 @then("Verify 'Help' header")
 def verify_header_exists(context):
-    context.driver.find_element(*HELP_HEADER)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(HELP_HEADER),
+        message='Help header not displayed'
+    )
 
 
 @then('Verify 2 elements block')
 def verify_two_elements_block(context):
-    context.driver.find_element(*TWO_ELEMENTS_BLOCK)
+    context.driver.wait.until(
+        EC.visibility_of_all_elements_located(TWO_ELEMENTS_BLOCK),
+        message='Elements block not displayed'
+    )
 
 
 @then("Verify 'Browse all help' button")
 def verify_browse_all_help_button(context):
-    context.driver.find_element(*BROWSE_ALL_HELP_BUTTON)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(BROWSE_ALL_HELP_BUTTON),
+        message='Browse All Help button not displayed'
+    )
 
 
 @then("Verify 'Help Search' field")
 def verify_help_search(context):
-    context.driver.find_element(*HELP_SEARCH_FIELD)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(HELP_SEARCH_FIELD),
+        message='Help Search Field not displayed'
+    )
 
 
 @then("Verify 'Search' button")
 def verify_search_button(context):
-    context.driver.find_element(*HELP_SEARCH_BUTTON)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(HELP_SEARCH_BUTTON),
+        message='Search button not displayed'
+    )
 
 
 @then("Verify 'What would you like help with' header")
 def verify_header(context):
-    context.driver.find_element(*WHAT_WOULD_YOU_HEADER)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(WHAT_WOULD_YOU_HEADER),
+        message='What Would You Like Help with header not displayed'
+    )
 
 
 @then("Verify 'Navigation Card' wrapper")
 def verify_nav_card_wrapper(context):
-    context.driver.find_element(*NAV_CARD_WRAPPER)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(NAV_CARD_WRAPPER),
+        message='Navigation Card wrapper not displayed'
+    )
 
 
 @then("Verify 'Popular Pages' header")
 def verify_container(context):
-    context.driver.find_element(*POP_PAGES_HEADER)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(POP_PAGES_HEADER),
+        message='Popular Pages header is not displayed'
+    )
 
 
 @then("Verify 'Link Card' container")
 def verify_link_container(context):
-    context.driver.find_element(*LINK_CARD_CONTAINER)
+    context.driver.wait.until(
+        EC.visibility_of_element_located(LINK_CARD_CONTAINER),
+        message='Link Card container is not displayed'
+    )
