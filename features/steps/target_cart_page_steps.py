@@ -16,13 +16,7 @@ def open_cart_page(context):
 
 @then('Verify “Your cart is empty” message is shown')
 def verify_cart_empty(context):
-    expected = "Your cart is empty"
-    # actual = context.driver.find_element(*CART_TEXT).text
-    actual = context.driver.wait.until(
-        EC.visibility_of_element_located(CART_TEXT),
-        message='Text is not displayed'
-    ).text
-    assert expected == actual, f"Expected: '{expected}' NOT shown, it shows actual: '{actual}'"
+    context.app.cart_page.verify_empty_cart()
 
 
 @then('Verify Cart has more than {expected_amount} item(s)')

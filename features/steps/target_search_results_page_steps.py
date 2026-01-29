@@ -9,27 +9,22 @@ AD_BANNER = (By.CSS_SELECTOR, "img.heroImg")
 ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[id*='addToCartButton']")
 SIDE_NAV_ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[data-test='content-wrapper'] [id*='addToCart']")
 PRODUCT_NAME = (By.XPATH, "//div[@class='h-margin-l-default']// a")
-PRODUCT_CARDS = (By.CSS_SELECTOR, "[data-test*='ProductCardVariantDefault']")
-PRODUCT_TITLE = (By.CSS_SELECTOR, "a[data-test='@web/ProductCard/title']")
-PRODUCT_IMAGE = (By.CSS_SELECTOR, "[data-test*='ProductCardVariantDefault'] picture[data-test*='secondary']")
+PRODUCT_CARDS = (By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductCardVariantDefault']")
+PRODUCT_TITLE = (By.CSS_SELECTOR, "[data-test*='title']")
+PRODUCT_IMAGE = (By.CSS_SELECTOR, "img")
 
 
 @then('Search results for {expected_product} are shown')
 def verify_search_results(context, expected_product):
-    actual = context.driver.wait.until(
-        EC.presence_of_element_located(SEARCH_RESULTS),
-        message='Search results page not found'
-    ).text
-    assert expected_product in actual, f"Expected: '{expected_product}' NOT in Actual: '{actual}'"
+    context.app.search_results_page.verify_search_results(expected_product)
 
 
 @when('Click "Add to cart" button')
 def click_add_to_cart_btn(context):
-    sleep(15)  # wait 15 sec for AD_BANNER to disappear
-    # context.driver.wait.until(
-    #     EC.invisibility_of_element_located(AD_BANNER),
-    #     message='Ad Banner is still visible'
-    # )
+    context.driver.wait.until(
+        EC.invisibility_of_element_located(AD_BANNER),
+        message='Ad Banner is still visible'
+    )
     context.driver.wait.until(
         EC.element_to_be_clickable(ADD_TO_CART_BTN),
         message='Add To Cart button is not clickable'
@@ -58,12 +53,29 @@ def verify_product_title_and_image(context):
         message='Ad Banner is still visible'
     )
 
+    # Scroll up and down to trigger lazy loading of product images and listings
+    context.driver.execute_script("window.scrollTo(0,3000)","")  # 3000 is the number of pixels to scroll
+    sleep(0.5)
+    context.driver.execute_script("window.scrollTo(0,-2000)","")
+    sleep(0.5)
+    # context.driver.execute_script("window.scrollTo(0,2000)", "")
+    # sleep(0.5)
+    # context.driver.execute_script("window.scrollTo(0,2000)", "")
+    # sleep(0.5)
+
+    # Retrieve all product cards displayed in the search results
     cards = context.driver.find_elements(*PRODUCT_CARDS)
+    print(len(cards))  # prints the number of elements (product cards) that exists.
 
-    for card in cards:
+    # Validate only the first few product cards to reduce test execution time
+    for card in cards[:4]:
 
-        title = context.driver.find_elements(*PRODUCT_TITLE)
-        image = context.driver.find_elements(*PRODUCT_IMAGE)
+        # Extract the product title text for validation and logging
+        title = card.find_element(*PRODUCT_TITLE).text
+        assert title, "Product title is not displayed"
 
-        assert title, "Product title is not visible"
-        assert image, "Product image is not visible"
+        # Verify that the product image element exists within the product card
+        card.find_element(*PRODUCT_IMAGE)
+
+        # Log product titles for visibility during test execution
+        print(f"💜{title}")
