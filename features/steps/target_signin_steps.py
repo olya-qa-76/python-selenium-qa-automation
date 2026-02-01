@@ -4,17 +4,15 @@ from time import sleep
 
 
 @when('Click "Account" button')
-def click_account(context):
-    context.driver.find_element(By.CSS_SELECTOR, "[data-test='@web/AccountLink']").click()
+def click_account_btn(context):
+    context.app.header.click_account_btn()
 
 
 @when('From right side navigation menu, click "Sign In" button')
-def click_sign_in(context):
-    context.driver.find_element(By.CSS_SELECTOR, "[data-test='accountNav-signIn']").click()
+def click_side_nav_account_btn(context):
+    context.app.header.click_side_nav_account_btn()
 
 
 @then('Verify Sign In form opened')
-def verify_sign_in(context):
-    expected = 'Sign in'
-    actual = context.driver.find_element(By.XPATH, "//*[text()='Sign in or create account']").text
-    assert expected in actual, f"Expected: '{expected}' NOT in actual: '{actual}'"
+def verify_sign_in_msg(context):
+    context.app.sign_in_page.verify_sign_in_msg()

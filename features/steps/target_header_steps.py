@@ -11,10 +11,10 @@ def click_cart(context):
     context.app.header.click_cart_icon()
 
 
-
 @when('Search for {product}')
 def search_product(context, product):
-    context.app.header.search(product)  # pass the `product` variable from the feature file.
+    context.app.header.search(product)
+
 
 @then('Verify {expected_links} header links are shown')
 def verify_header_links(context, expected_links):
