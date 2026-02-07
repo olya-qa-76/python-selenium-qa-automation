@@ -27,6 +27,20 @@ class Page:
     def input_text(self, text, *locator):
         self.driver.find_element(*locator).send_keys(text)
 
+    def get_current_window_handle(self):
+        return self.driver.current_window_handle  # we use 'return' so whenever we call the method 'get_current_window_handle', it will print 'current_window_handle'
+
+    def switch_to_new_window(self):
+        self.driver.wait.until(EC.new_window_is_opened)  # For Best Practice: use explicit_wait() and wait for new_window_is_opened condition to occur
+        all_windows = self.driver.window_handles
+        print('All windows:', all_windows)
+        print('Switching to new window:', all_windows[1])
+        self.driver.switch_to.window(all_windows[1])
+
+    def switch_to_window_by_id(self, window_id):  # we should pass the stored window variable in context in the step: 'Store original window'
+        self.driver.switch_to.window(window_id)
+        print('Switch to Window by id:', window_id)
+
     def wait_until_element_present(self, *locator):
         self.driver.wait.until(
             EC.presence_of_element_located(locator),
@@ -62,6 +76,9 @@ class Page:
             EC.url_contains(expected_partial_url),
             message=f"Expected '{expected_partial_url}' not in actual '{self.driver.current_url}'"
         )
+
+    def close_page(self):
+        self.driver.close()  # close() will close only the page you are on, quit() will close all the pages and kill the browser)
 
     def verify_partial_text(self, expected_partial_text, *locator):
         actual_text = self.find_element(*locator).text

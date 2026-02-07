@@ -6,14 +6,24 @@ from behave import given, when, then
 HEADER_LINKS = (By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader/']")
 
 
+@when('Search for {product}')
+def search_product(context, product):
+    context.app.header.search(product)
+
+
 @when('Click on Cart icon')
 def click_cart(context):
     context.app.header.click_cart_icon()
 
 
-@when('Search for {product}')
-def search_product(context, product):
-    context.app.header.search(product)
+@when('Click "Account" button')
+def click_account_btn(context):
+    context.app.header.click_account_btn()
+
+
+@when('From right side navigation menu, click "Sign In" button')
+def click_side_nav_account_btn(context):
+    context.app.header.click_side_nav_account_btn()
 
 
 @then('Verify {expected_links} header links are shown')
