@@ -22,7 +22,6 @@ def browser_init(context, scenario_name):
     # context.driver = webdriver.Chrome(options=options)
 
     ### BROWSERSTACK ###
-    # Register for BrowserStack, then grab it from https://www.browserstack.com/accounts/settings
     # bs_user = ''
     # bs_key = ''
     #

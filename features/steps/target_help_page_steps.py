@@ -19,6 +19,16 @@ def open_target_help_page(context):
     context.driver.get('https://help.target.com/help')
 
 
+@given('Open Help page for Returns')
+def open_help_for_returns(context):
+    context.app.help_page.open_help_returns()
+
+
+@when('Select Help topic {option_value}')
+def select_topic(context, option_value):
+    context.app.help_page.select_topic(option_value)
+
+
 @then("Verify 'Help' header")
 def verify_header_exists(context):
     context.driver.wait.until(
@@ -89,3 +99,13 @@ def verify_link_container(context):
         EC.visibility_of_element_located(LINK_CARD_CONTAINER),
         message='Link Card container is not displayed'
     )
+
+
+@then('Verify help {topic} page opened')
+def verify_help_returns_opened(context, topic):
+    context.app.help_page.verify_help_topic_opened(topic)
+
+
+# @then('Verify help Returns page opened')
+# def verify_returns_opened(context):
+#     context.app.help_page.verify_returns_opened()

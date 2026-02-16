@@ -1,3 +1,4 @@
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -28,18 +29,23 @@ class Page:
         self.driver.find_element(*locator).send_keys(text)
 
     def get_current_window_handle(self):
-        return self.driver.current_window_handle  # we use 'return' so whenever we call the method 'get_current_window_handle', it will print 'current_window_handle'
+        return self.driver.current_window_handle
 
     def switch_to_new_window(self):
-        self.driver.wait.until(EC.new_window_is_opened)  # For Best Practice: use explicit_wait() and wait for new_window_is_opened condition to occur
+        self.driver.wait.until(EC.new_window_is_opened)
         all_windows = self.driver.window_handles
         print('All windows:', all_windows)
         print('Switching to new window:', all_windows[1])
         self.driver.switch_to.window(all_windows[1])
 
-    def switch_to_window_by_id(self, window_id):  # we should pass the stored window variable in context in the step: 'Store original window'
+    def switch_to_window_by_id(self, window_id):
         self.driver.switch_to.window(window_id)
         print('Switch to Window by id:', window_id)
+
+    def hover_element(self, *locator):
+        element = self.find_element(*locator)
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element).perform()
 
     def wait_until_element_present(self, *locator):
         self.driver.wait.until(
@@ -78,7 +84,7 @@ class Page:
         )
 
     def close_page(self):
-        self.driver.close()  # close() will close only the page you are on, quit() will close all the pages and kill the browser)
+        self.driver.close()
 
     def verify_partial_text(self, expected_partial_text, *locator):
         actual_text = self.find_element(*locator).text

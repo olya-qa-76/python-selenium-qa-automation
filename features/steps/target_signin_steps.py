@@ -1,5 +1,4 @@
 from behave import given, when, then
-from time import sleep
 
 
 @given('Open sign in page')

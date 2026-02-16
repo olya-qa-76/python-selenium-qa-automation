@@ -34,6 +34,11 @@ def click_side_nav_sign_in_btn(context):
     context.app.search_results_page.click_side_nav_add_to_cart_btn()
 
 
+@when('Hover favorites icon')
+def hover_fav_icon(context):
+    context.app.search_results_page.hover_fav_icon()
+
+
 @then('Verify that every product on Target search results page has a title and image')
 def verify_product_title_and_image(context):
     context.driver.wait.until(EC.invisibility_of_element(AD_BANNER),
@@ -55,3 +60,8 @@ def verify_product_title_and_image(context):
         card.find_element(*PRODUCT_IMAGE)
 
         print(f"💜{title}")
+
+
+@then('Favorites tooltip is shown')
+def verify_fav_tooltip(context):
+    context.app.search_results_page.verify_fav_tooltip()

@@ -12,8 +12,6 @@ class CartPage(Page):
 
     def verify_empty_cart_msg(self):
         self.verify_partial_text(self.empty_cart_msg, *self.EMPTY_CART_TEXT)
-        # self.wait_until_url_contains('cart')
-        # self.verify_url(f"{self.base_url}/cart")
 
         # empty_msg_element = self.find_element(*self.EMPTY_CART_TEXT)
         # print(empty_msg_element)

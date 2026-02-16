@@ -15,7 +15,6 @@ class Header(Page):
         sleep(10)
 
     def click_cart_icon(self):
-        # self.click(*self.CART_ICON)
         self.wait_until_clickable_click(*self.CART_ICON)
 
     def click_account_btn(self):
